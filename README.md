@@ -26,16 +26,17 @@ The design will be based on [Jarek Korus'es Thunderstorm] (https://www.youtube.c
  * Start and stop the line following program
  * Monitor battery voltage
  * Change PID constants
+ * Control blower (on-off, speed)
  * Choose whether to use normal line following or line following with obstacles
 * Sensors:
  * n IR light sensors for line detection
  * G-sensor for detecting if the robot is on a ramp
  * Two IR proximity sensors to detect the obstacles
  * Li-Po monitoring IC
-* Arduino mini for live WiFi or bluetooth feedback of sensors
+* Arduino mini for live WiFi or bluetooth feedback of sensors (maybe include it onto main board)
  * **Reasoning:**
   - Reduces time when the main processor has to deal with things that are not related to running the main program
   - Deals with the communication with the remote
-  - Can give life feedback of the sensors
+  - Can give live feedback of the sensors
    - Can be used to save the data and plot a graph of line errors
 
