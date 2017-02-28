@@ -33,9 +33,9 @@ The design will be based on [Jarek Korus'es Thunderstorm] (https://www.youtube.c
  * Two IR proximity sensors to detect the obstacles
  * Li-Po monitoring IC
 * Arduino mini for live WiFi or bluetooth feedback of sensors
- * Reasoning:
-  * Reduces time when the main processor has to deal with things that are not related to running the main program
-  * Deals with the communication with the remote
-  * Can give life feedback of the sensors
-   * Can be used to save the data and plot a graph of line errors
+ * **Reasoning:**
+  - Reduces time when the main processor has to deal with things that are not related to running the main program
+  - Deals with the communication with the remote
+  - Can give life feedback of the sensors
+   - Can be used to save the data and plot a graph of line errors
 
