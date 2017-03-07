@@ -40,3 +40,6 @@ The design will be based on [Jarek Korus'es Thunderstorm] (https://www.youtube.c
   - Can give live feedback of the sensors
    - Can be used to save the data and plot a graph of line errors
 
+## BOM
+[Google Drive spreadsheet] (https://docs.google.com/spreadsheets/d/14ZZVYrouCOKjxGVaX2KsAmJzS4HpelGW_TXLZ0HPqsI/edit#gid=0)
+
