@@ -29,9 +29,9 @@ The design will be based on [Jarek Korus'es Thunderstorm] (https://www.youtube.c
  * Control blower (on-off, speed)
  * Choose whether to use normal line following or line following with obstacles
 * Sensors:
- * n IR light sensors for line detection
- * G-sensor for detecting if the robot is on a ramp
- * Two IR proximity sensors to detect the obstacles
+ * 14 IR light sensors for line detection
+ * 2-axis accelerometer to calculate tilt angles
+ * Three IR proximity sensors to detect the obstacles
  * Li-Po monitoring IC
 * Arduino mini for live WiFi or bluetooth feedback of sensors (maybe include it onto main board)
  * **Reasoning:**
