@@ -67,8 +67,8 @@ typedef unsigned char bool;
 
 #define ESC_PWM OC0A
 
-void write_pins(uint16_t port, uint16_t pins);
-void read_pin(uint16_t port, uint16_t pin);
+void write_pins(uint16_t, uint16_t);
+void read_pin(uint16_t, uint16_t);
 
 #define LIGHTS 7
 #define PROXES 3

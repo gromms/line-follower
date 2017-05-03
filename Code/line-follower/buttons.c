@@ -8,7 +8,7 @@ void buttons_init() {
 	
 	// make stop interrupt driven
 	EICRA = (1<<ISC11); // The falling edge of INTn generates asynchronously an interrupt request.
-	EIMSK |= (1<<INT0);
+	EIMSK |= (1<<STOP);
 }
 
 ISR(INT0_vect) { // freezes when stop is high
