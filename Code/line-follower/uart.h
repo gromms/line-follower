@@ -1,6 +1,8 @@
-#ifndef UART_H_
-#define UART_H_
 
-void uart_init();
+void UART_init();
 
-#endif
+
+// UART andmed massiivides, ilma katkestuseta
+// void UART_read(uint8_t *massiiv);
+// void UART_write(uint8_t *massiiv);
+

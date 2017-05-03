@@ -1,29 +1,34 @@
 #ifndef PINOUT_H
 #define PINOUT_H
 
+#include <avr/io.h>
+
+#define TRUE 1
+#define FALSE 0
+typedef unsigned char bool;
 
 // Proximity sensors
 
-#define PROX1 ADC0
-#define PROX2 ADC1
-#define PROX3 ADC4
+#define PROX1 0b000000
+#define PROX2 0b000001
+#define PROX3 0b000100
 
 
 // Accelerometer 
 
-#define ACCEL_X ADC5	
-#define ACCEL_Z ADC6
+#define ACCEL_X 0b000101	
+#define ACCEL_Z 0b000110
 
 
 // IR line sensors
 
-#define IR0 ADC7
-#define IR1 ADC10
-#define IR2 ADC9
-#define IR3 ADC8
-#define IR4 ADC13
-#define IR5 ADC12
-#define IR6 ADC11
+#define IR0 0b000111
+#define IR1 0b100010
+#define IR2 0b100001
+#define IR3 0b100000
+#define IR4 0b100101
+#define IR5 0b100100
+#define IR6 0b100011
 
 
 // Line sensors' multiplexer select
@@ -64,6 +69,15 @@
 
 void write_pins(uint16_t port, uint16_t pins);
 void read_pin(uint16_t port, uint16_t pin);
+
+#define LIGHTS 7
+#define PROXES 3
+
+uint8_t sensor_arr[LIGHTS];
+uint8_t prox_arr[PROXES];
+
+extern volatile uint16_t *light_vals[LIGHTS];
+extern volatile uint16_t *prox_vals[PROXES];
 
 
 #endif
