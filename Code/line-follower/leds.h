@@ -2,8 +2,9 @@
 #define LEDS_H 
 
 #include <avr/io.h>
+#include "pinout.h"
 
 void leds_init();
-void set_led(uint8_t channel, uint8_t on_off);
+void set_led(uint8_t, bool);
 
 #endif 

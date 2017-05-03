@@ -4,8 +4,8 @@
 #include "pinout.h"
 
 void adc_init();
-void choose_mux(uint8_t mux);
-void read_lights(uint16_t*);
+void choose_mux(uint8_t);
+void read_lights(volatile uint16_t*);
 
 
 #endif

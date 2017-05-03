@@ -21,7 +21,7 @@ uint16_t adc_read(uint8_t channel) // reads adc value from given channel
 	return ADC;	
 }
 
-void read_lights(uint16_t *light_vals) // 0...14 on andurid vasakult paremale
+void read_lights(volatile uint16_t *light_vals) // 0...14 on andurid vasakult paremale
 { 
 	PORTE &= ~(1<<MUX_S);		// MUX_s = 0
 	
