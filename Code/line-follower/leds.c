@@ -5,24 +5,24 @@
 
 void leds_init() 
 { // leds on PC6, PC7, PB2 as outputs
-	DDRC |= (1<<CALIB_LED)|(1<<STATUS_LED1);
+	DDRC |= (1<<CALIB_LED) | (1<<STATUS_LED1);
 	DDRB |= (1<<STATUS_LED2);
 }
 
-void set_led(uint8_t led, bool on) 
+void set_led(uint8_t led, bool_t on) 
 {
 	if(led == STATUS_LED2)
 	{
 		if (on) 
-			PORTB |= (1<<led);
+			BIT_SET(PORTB, STATUS_LED2);
 		else
-			PORTB &= ~(1<<led);
+			CLEAR_PIN(PORTB, STATUS_LED2);
 	}
 	else
 	{
 		if (on)
-			PORTC |= (1<<led);
+			BIT_SET(PORTC, led);
 		else
-			PORTC &= ~(1<<led);
+			CLEAR_PIN(PORTC, led);
 	}
 }

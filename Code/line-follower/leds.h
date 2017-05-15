@@ -5,6 +5,6 @@
 #include "pinout.h"
 
 void leds_init();
-void set_led(uint8_t, bool);
+void set_led(uint8_t led, bool_t on);
 
 #endif 

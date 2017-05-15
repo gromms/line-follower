@@ -5,7 +5,13 @@
 
 #define TRUE 1
 #define FALSE 0
-typedef unsigned char bool;
+typedef unsigned char bool_t;
+
+#define CLEAR_PIN(port, pin) (port &= ~(1 << pin))
+//#define BIT_SET(a,b) ((a) = (1<<(b)))
+#define CHECK_PIN(port, pin) (port & (1 << pin))
+
+void BIT_SET(uint8_t *port, uint8_t pin);
 
 // Proximity sensors
 
@@ -65,19 +71,17 @@ typedef unsigned char bool;
 
 // ESC PWM pin
 
-#define ESC_PWM OC0A
+#define ESC_PWM PB7
 
 void write_pins(uint16_t, uint16_t);
 void read_pin(uint16_t, uint16_t);
 
-#define LIGHTS 7
+#define LIGHTS_PER_HALF 7
+#define LIGHTS 14
 #define PROXES 3
 
-uint8_t sensor_arr[LIGHTS];
-uint8_t prox_arr[PROXES];
-
-extern volatile uint16_t *light_vals[LIGHTS];
-extern volatile uint16_t *prox_vals[PROXES];
+uint16_t light_vals[LIGHTS];
+uint16_t prox_vals[PROXES];
 
 
 #endif
