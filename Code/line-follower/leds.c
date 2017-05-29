@@ -14,15 +14,15 @@ void set_led(uint8_t led, bool_t on)
 	if(led == STATUS_LED2)
 	{
 		if (on) 
-			BIT_SET(PORTB, STATUS_LED2);
+			PORTB |= (1 << STATUS_LED2);
 		else
-			CLEAR_PIN(PORTB, STATUS_LED2);
+			PORTB &= ~(1 << STATUS_LED2);
 	}
 	else
 	{
 		if (on)
-			BIT_SET(PORTC, led);
+			PORTC |= (1 << led);
 		else
-			CLEAR_PIN(PORTC, led);
+			PORTC &= ~(1 << led);
 	}
 }

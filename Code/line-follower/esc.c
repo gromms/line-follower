@@ -3,6 +3,8 @@
 #include <avr/io.h>
 #include "pinout.h"
 
+void esc_set_speed(uint8_t spd);
+
 void esc_init()
 {
 	DDRB |= (1<<ESC_PWM);
@@ -11,6 +13,8 @@ void esc_init()
 	TCCR1B |= (1<<WGM13)|(1<<WGM12); 
 
 	ICR1=4999;  //fPWM=50Hz (Period = 20ms Standard).
+	TCCR1B |= (1<<CS11)|(1<<CS10);
+	esc_set_speed(0);
 }
 
 void esc_set_speed(uint8_t spd)
@@ -22,11 +26,11 @@ void esc_set_speed(uint8_t spd)
 void esc_stop()
 {
 	esc_set_speed(0);
-	TCCR1B &= ~((1<<CS11) | (1<<CS10));
+	//TCCR1B &= ~((1<<CS11) | (1<<CS10));
 }
 
 void esc_start()
 {
+	//TCCR1B |= (1<<CS11)|(1<<CS10);
 	esc_set_speed(0);
-	TCCR1B |= (1<<CS11)|(1<<CS10);
 }

@@ -23,6 +23,29 @@ void usb_write(const char *str) {
 	}
 }
 
+void usb_debug()
+{
+	char buf[16];
+	
+	read_lights(light_vals);
+	
+	for(int i = 0; i < LIGHTS; i++)
+	{
+		sprintf(buf, "%d ", light_vals[i]);
+		usb_write(buf);
+	}
+	/*
+	read_proxes(prox_vals);
+	for(int i = 0; i < PROXES; i++)
+	{
+		sprintf(buf, "%d ", prox_vals[i]);
+		usb_write(buf);
+	}
+	printf(buf, "%d\n", adc_read(IR6));
+ 	
+	usb_write(buf);*/
+}
+
 
 int main(void)
 {
@@ -40,8 +63,8 @@ int main(void)
 	// Initializations
 	usb_init();
 	adc_init();
- 	UART_init();
-	esc_init();
+// 	UART_init();
+//	esc_init();
  	buttons_init();
 	leds_init();
 	
@@ -52,38 +75,41 @@ int main(void)
 	
 	//_delay_ms(3000);
     
-	esc_stop();
+	//esc_stop();
+	//motor_drive(0, 0);
 	
-	while(check_start_state());
+	//while(check_start_state());
 	
-	esc_start();
-	esc_set_speed(30);
-	calib_load();
+	//_delay_ms(1000);
 	
-	_delay_ms(2000);
+	//esc_start();
+	//esc_set_speed(20);
+	//calib_load();
+	
+	//_delay_ms(1000);
 	
 	while (1) 
     {
-		char buf[16];
-		
-		read_lights(light_vals);
-		
-		for(int i = 0; i < LIGHTS; i++)
-		{
-			sprintf(buf, "%d ", light_vals[i]);	
-			usb_write(buf);	
-		}
+ 		char buf[16];
+ 		
+ 		read_lights(light_vals);
+ 		
+ 		for(int i = 0; i < LIGHTS; i++)
+ 		{
+	 		sprintf(buf, "%d ", light_vals[i]);
+	 		usb_write(buf);
+ 		}
+		usb_write("\n");
 
-		read_proxes(prox_vals);
+// 		read_proxes(prox_vals);
+// 		for(int i = 0; i < PROXES; i++)
+// 		{
+// 			sprintf(buf, "%d ", prox_vals[i]);
+// 			usb_write(buf);
+// 		}
+// 		usb_write("\n");
 
-		for(int i = 0; i < PROXES; i++)
-		{
-			sprintf(buf, "%d ", prox_vals[i]);
-			usb_write(buf);
-		}
-
-		sprintf(buf, "%d\n", adc_read(IR6));
-		usb_write(buf);
+		//motor_drive(500, 500);
     }
 }
 

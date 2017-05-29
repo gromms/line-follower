@@ -9,6 +9,7 @@ uint8_t prox_arr[PROXES] = {PROX1, PROX2, PROX3};
 
 void adc_init() //AV CC with external capacitor on AREF pin
 { 
+
 	ADCSRA |= (1<<ADEN); //enable ADC
 	ADMUX = (1<<REFS0); //AVCC with external capacitor on AREF pin
 	DIDR0 = 0b11110011;
@@ -20,7 +21,7 @@ uint16_t adc_read(uint8_t channel) // reads adc value from given channel
 	ADMUX = (1<<REFS0) | (channel & 0b011111);	// re-init MUXes to 
 	ADCSRB =  (1 << ADHSM) | (channel & (1 << MUX5));
 		
-	ADCSRA |= (1<<ADSC);
+	ADCSRA |= (1<<ADSC) | (1<<ADPS1) | (1<<ADPS0);
 	
 	while(ADCSRA & (1 << ADSC));
 	
@@ -33,13 +34,30 @@ void read_lights(uint16_t *light_vals) // 0...14 on andurid vasakult paremale
 	{
 		CLEAR_PIN(PORTE, MUX_S);
 		
-		for(uint8_t i = 0; i < LIGHTS_PER_HALF; i++)
-			light_vals[i] = adc_read(lights_arr[i]);
-
-		PORTE |= (1 << MUX_S);
+		light_vals[1] = adc_read(lights_arr[6]);
+		light_vals[3] = adc_read(lights_arr[5]);
+		light_vals[4] = adc_read(lights_arr[4]);
+		light_vals[6] = adc_read(lights_arr[3]);
+		light_vals[8] = adc_read(lights_arr[2]);
+		light_vals[11] = adc_read(lights_arr[1]);
+		light_vals[13] = adc_read(lights_arr[0]);
 				
-		for(int i = 0; i < LIGHTS_PER_HALF; i++)
-			light_vals[i + 7] = adc_read(lights_arr[i]);
+// 		for(uint8_t i = 0; i < LIGHTS_PER_HALF; i++)
+// 			light_vals[i] = adc_read(lights_arr[i]);
+// 
+ 		PORTE |= (1 << MUX_S);
+
+		light_vals[0] = adc_read(lights_arr[6]);
+		light_vals[2] = adc_read(lights_arr[5]);
+		light_vals[5] = adc_read(lights_arr[3]);
+		light_vals[7] = adc_read(lights_arr[4]);
+		light_vals[9] = adc_read(lights_arr[2]);
+		light_vals[10] = adc_read(lights_arr[1]);
+		light_vals[12] = adc_read(lights_arr[0]);
+
+// 				
+// 		for(int i = 0; i < LIGHTS_PER_HALF; i++)
+// 			light_vals[i + 7] = adc_read(lights_arr[i]);
 	}
 }
 

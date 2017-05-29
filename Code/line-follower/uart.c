@@ -8,19 +8,13 @@
 
 void UART_init() 
 {
-	UBRR1 = 51; // baudrate 19200 @16MHz 
+	UBRR1 = 103; // 9600 (51 : 19200) 
 	UCSR1B |= (1<<TXEN1); // TX enable
 	UCSR1C |= (1<<UCSZ10)|(1<<UCSZ11); // Set frame format: 8data, 1 stop bit
 	
 	DDRB |= (1 << DE);
 	PORTB |= (1 << DE);
 }
-
-// UART andmed massiivides, ilma katkestuseta
-/*void UART_read(uint8_t *massiiv) 
-{
-	
-}*/
 
 static void UART_sendChar(char c)
 {
@@ -32,7 +26,7 @@ static void UART_sendChar(char c)
 }
 
 void UART_write(char *data) 
-{
+{	
 	while(*data)
 	{
 		UART_sendChar(*data);
@@ -40,13 +34,22 @@ void UART_write(char *data)
 	}
 }
 
-void motor_drive(uint8_t left, uint8_t right)
+void motor_drive(int16_t left, int16_t right)
 {
 	char buf[16];
+	//int * intlocation = (int*)(&buf[3]);
+	
+	//int32_t leftSpeed = ((left << 16) / 1000) << 8;
+	//int32_t rightSpeed = ((right << 16) / 1000) << 8;
 
-	sprintf(buf, "1:s%s0.%.3d\n", -left < 0 ? "-" : "", abs(left));
+	sprintf(buf, "1:s%s0.%.3d\n", -left < 0 ? "" : "-", abs(left));
+		
 	UART_write(buf);
 
-	sprintf(buf, "2:s%s0.%.3d\n", -right < 0 ? "-" : "", abs(right));
+	sprintf(buf, "2:s%s0.%.3d\n", -right < 0 ? "" : "-", abs(right));
 	UART_write(buf);
+//  	buf[1] = '2';
+// 
+// 	*intlocation = rightSpeed;
+// 
 }
