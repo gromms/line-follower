@@ -22,13 +22,13 @@ uint16_t Kd = 0;
 
 uint16_t base_motor_speed = 200;
 
-uint16_t light_weight = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
-uint16_t get_error(uint16_t * lights, uint16_t min_val, uint16_t max_val)
+int16_t light_weight = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
+int16_t get_error(uint16_t *lights, uint16_t *min_vals, uint16_t *max_vals)
 {
-	uint16_t error = 0;
-	for (int8_t i = 0; i < 14; i++)
+	int16_t error = 0;
+	for (uint8_t i = 0; i < 14; i++)
 	{
-		error += (lights[i]-min_val) / (max_val - min_val) * light_weight[i];
+		error += (lights[i]-min_vals[i]) / (max_val[i] - min_val[i]) * light_weight[i];
 	}
 	return error;
 }
