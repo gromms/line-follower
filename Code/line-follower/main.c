@@ -1,4 +1,3 @@
-
 #define F_CPU 16000000
 
 #include <avr/io.h>
@@ -15,6 +14,24 @@
 #include "leds.h"
 #include "usb_serial.h"
 #include  "calib.h"
+
+
+uint16_t Kp = 10;
+uint16_t Ki = 0;
+uint16_t Kd = 0;
+
+uint16_t base_motor_speed = 200;
+
+uint16_t light_weight = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
+uint16_t get_error(uint16_t * lights, uint16_t min_val, uint16_t max_val)
+{
+	uint16_t error = 0;
+	for (int8_t i = 0; i < 14; i++)
+	{
+		error += (lights[i]-min_val) / (max_val - min_val) * light_weight[i];
+	}
+	return error;
+}
 
 void usb_write(const char *str) {
 	while (*str) {
@@ -108,8 +125,9 @@ int main(void)
 // 			usb_write(buf);
 // 		}
 // 		usb_write("\n");
-
-		//motor_drive(500, 500);
+		
+		uint16_t error_motor_speed = Kp*get_error(light_vals, miinimum ja maksimus);
+		
+		motor_drive(base_motor_speed - error_motor_speed, base_motor_speed + error_motor_speed);
     }
 }
-
