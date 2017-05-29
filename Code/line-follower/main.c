@@ -28,7 +28,7 @@ int16_t get_error(uint16_t *lights, uint16_t *min_vals, uint16_t *max_vals)
 	int16_t error = 0;
 	for (uint8_t i = 0; i < 14; i++)
 	{
-		error += (lights[i]-min_vals[i]) / (max_val[i] - min_val[i]) * light_weight[i];
+		error += ( 1 - (lights[i]-min_vals[i]) / (max_val[i] - min_val[i]) ) * light_weight[i];
 	}
 	return error;
 }
