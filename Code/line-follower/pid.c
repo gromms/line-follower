@@ -11,13 +11,45 @@ uint16_t Kd = 0.0;
 int16_t pError = 0;
 int16_t error = 0;
 
-int16_t light_weight[] = {-64,-32,-16,-8,-4,-2,-1, 1,2,3,8,16,32,64};
+int16_t light_weight[] = {-64,-32,-16,-8,-4,-2,-1,1,2,4,8,16,32,64};
 //int16_t light_weight[] = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
+
+uint16_t p_light_vals[LIGHTS];
+bool_t is_on_line = TRUE;
+
+void check_losing_line() 
+{
+	// check the leftmost sensors
+	if (light_vals[0] < p_light_vals[0] && light_vals[1] > p_light_vals[1]) 
+	{
+		is_on_line = TRUE;
+		//moving right
+	}
+	else 
+	{
+		//lost line moving left
+		is_on_line = FALSE;
+		error = light_weight[0];
+	}
+	
+	// check the rightmost sensors
+	if (light_vals[13] < p_light_vals[13] && light_vals[12] > p_light_vals[12])
+	{
+		//moving left
+		is_on_line = TRUE;
+	}
+	else 
+	{
+		//lost line moving right
+		is_on_line = FALSE;
+		error = light_weight[13];
+	}
+}
 
 int16_t calc_error( uint16_t *lights_max, uint16_t *lights_min)
 {
 	//char buf[16];
-	
+
 	error = 0;
 	double err_sum = 0;
 	
@@ -38,7 +70,27 @@ int16_t calc_error( uint16_t *lights_max, uint16_t *lights_min)
 	//sprintf(buf, "%d", error);
 	//usb_write(buf);
 	//usb_write("\n");
+	
+	if (error == 0) 
+	{
+		if (is_on_line)
+			check_losing_line();
+		else
+			error = pError;
+	}
+	else 
+	{
+		is_on_line = TRUE;
+	}	
+	
+	for (uint8_t i = 0; i < LIGHTS; i++) 
+	{
+		p_light_vals[i] = light_vals[i];
+	}
+	err_sum = err_sum == 0 ? 1 : err_sum;
 	return error / err_sum;
+
+
 }
 
 int16_t calc_speed(uint16_t *lights_max, uint16_t *lights_min)
