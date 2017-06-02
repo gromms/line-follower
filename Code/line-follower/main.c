@@ -122,10 +122,18 @@ int main(void)
 		
 // 		int16_t error_motor_speed = Kp*get_error(light_vals, lights_min, lights_max);
 // 		
+
 		PORTC ^= (1 << STATUS_LED1);
-		int16_t speed_left = speed < 0 ? base_motor_speed : base_motor_speed - speed;
-		int16_t speed_right = speed > 0 ? base_motor_speed : base_motor_speed + speed; 
- 		motor_drive(speed_left, speed_right);
+		motor_drive(200, 200);
+		
+		_delay_ms(100);
+		PORTC ^= (1 << STATUS_LED1);
+		motor_drive(400, 400);
+		
+ 		_delay_ms(100);
+// 		int16_t speed_left = speed < 0 ? base_motor_speed : base_motor_speed + speed;
+// 		int16_t speed_right = speed > 0 ? base_motor_speed : base_motor_speed - speed; 
+//  		motor_drive(speed_left, speed_right);
 		//motor_drive(0, 0);
 // 		
 // 		sprintf(buf, " -- %d", error_motor_speed);

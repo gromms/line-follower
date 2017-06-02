@@ -8,6 +8,9 @@
 #include "leds.h"
 #include <util/delay.h>
 
+int32_t qSpeed;
+int32_t * intlocation;
+
 void UART_init() 
 {
 	UBRR1 = 7; // 9600 (51 : 19200) 
@@ -36,20 +39,33 @@ void UART_write(char *data)
 	}
 }
 
+void UART_write2(char *data, uint8_t len)
+{
+	for (uint8_t i = 0; i<len; i++) {
+		UART_sendChar(data[i]);
+	}
+}
+
 void motor_drive(int16_t left, int16_t right)
 {
-	char buf[16];
+	char buf[8];
 	//int * intlocation = (int*)(&buf[3]);
 	
 	//int32_t leftSpeed = ((left << 16) / 1000) << 8;
 	//int32_t rightSpeed = ((right << 16) / 1000) << 8;
 
-	sprintf(buf, "1:s%s0.%.3d\n", -left < 0 ? "" : "-", abs(left));
+	//sprintf(buf, "1:s%s0.%.3d\n", -left < 0 ? "" : "-", abs(left));
+	buf[0] = '<';
+	buf[1] = '1';
+	buf[2] = 's';
+	qSpeed = (((int32_t)left << 16) / 1000) << 8;
+	intlocation = (int32_t*)(&buf[3]);
+	*intlocation = qSpeed;		
+	buf[7] = '>';
+	UART_write2(buf, 8);
 
-	UART_write(buf);
-
-	sprintf(buf, "2:s%s0.%.3d\n", -right < 0 ? "" : "-", abs(right));
-	UART_write(buf);
+	//sprintf(buf, "2:s%s0.%.3d\n", -right < 0 ? "" : "-", abs(right));
+	//UART_write(buf);
 	
 //  	buf[1] = '2';
 // 
