@@ -22,7 +22,7 @@ void buttons_init() {
 	EICRA = (1<<ISC00); // The falling edge of INTn generates asynchronously an interrupt request.
 	EIMSK |= (1<<STOP);
 	
-	PCMSK0 |= (1 << PCINT1);
+	//PCMSK0 |= (1 << PCINT1);
 	PCICR |= (1 << PCIE0);
 }
 
@@ -36,14 +36,9 @@ bool_t check_start_state()
 	return CHECK_PIN(PIND, START);
 }
 
-bool_t check_calib_state()
+bool_t calib_state()
 {
 	return CHECK_PIN(PINB, CALIB);
-}
-
-ISR(PCINT0_vect)
-{
-	calib_start();
 }
 
 ISR(INT0_vect)  // freezes when stop button is pressed 

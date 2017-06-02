@@ -83,5 +83,7 @@ void read_pin(uint16_t, uint16_t);
 uint16_t light_vals[LIGHTS];
 uint16_t prox_vals[PROXES];
 
+uint16_t lights_max[LIGHTS];
+uint16_t lights_min[LIGHTS];
 
 #endif

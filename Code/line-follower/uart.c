@@ -1,3 +1,4 @@
+#define F_CPU 16000000
 
 #include "uart.h"
 #include <avr/io.h>
@@ -5,10 +6,11 @@
 #include <stdlib.h>
 #include "pinout.h"
 #include "leds.h"
+#include <util/delay.h>
 
 void UART_init() 
 {
-	UBRR1 = 103; // 9600 (51 : 19200) 
+	UBRR1 = 7; // 9600 (51 : 19200) 
 	UCSR1B |= (1<<TXEN1); // TX enable
 	UCSR1C |= (1<<UCSZ10)|(1<<UCSZ11); // Set frame format: 8data, 1 stop bit
 	
@@ -43,11 +45,12 @@ void motor_drive(int16_t left, int16_t right)
 	//int32_t rightSpeed = ((right << 16) / 1000) << 8;
 
 	sprintf(buf, "1:s%s0.%.3d\n", -left < 0 ? "" : "-", abs(left));
-		
+
 	UART_write(buf);
 
 	sprintf(buf, "2:s%s0.%.3d\n", -right < 0 ? "" : "-", abs(right));
 	UART_write(buf);
+	
 //  	buf[1] = '2';
 // 
 // 	*intlocation = rightSpeed;

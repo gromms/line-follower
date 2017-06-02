@@ -14,24 +14,11 @@
 #include "leds.h"
 #include "usb_serial.h"
 #include  "calib.h"
+#include "pid.h"
 
+uint16_t base_motor_speed = 150;
 
-uint16_t Kp = 10;
-uint16_t Ki = 0;
-uint16_t Kd = 0;
-
-uint16_t base_motor_speed = 200;
-
-int16_t light_weight = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
-int16_t get_error(uint16_t *lights, uint16_t *min_vals, uint16_t *max_vals)
-{
-	int16_t error = 0;
-	for (uint8_t i = 0; i < 14; i++)
-	{
-		error += ( 1 - (lights[i]-min_vals[i]) / (max_val[i] - min_val[i]) ) * light_weight[i];
-	}
-	return error;
-}
+void usb_write();
 
 void usb_write(const char *str) {
 	while (*str) {
@@ -80,10 +67,11 @@ int main(void)
 	// Initializations
 	usb_init();
 	adc_init();
-// 	UART_init();
+ 	UART_init();
 //	esc_init();
  	buttons_init();
 	leds_init();
+	calib_init(lights_max, lights_min);
 	
 // 	set_led(STATUS_LED1, TRUE);
 // 	set_led(CALIB_LED, TRUE);
@@ -95,8 +83,11 @@ int main(void)
 	//esc_stop();
 	//motor_drive(0, 0);
 	
-	//while(check_start_state());
-	
+	while(check_start_state());
+	while(calib_state())
+	{
+		calib_start(lights_max, lights_min);
+	}
 	//_delay_ms(1000);
 	
 	//esc_start();
@@ -104,20 +95,23 @@ int main(void)
 	//calib_load();
 	
 	//_delay_ms(1000);
-	
 	while (1) 
     {
- 		char buf[16];
+ 		//char buf[16];
  		
- 		read_lights(light_vals);
- 		
- 		for(int i = 0; i < LIGHTS; i++)
- 		{
-	 		sprintf(buf, "%d ", light_vals[i]);
-	 		usb_write(buf);
- 		}
-		usb_write("\n");
-
+  		//read_lights(light_vals);
+		
+		int16_t speed = calc_speed(lights_max, lights_min);
+// 		sprintf(buf, "%d \n", speed);
+// 		usb_write(buf);
+// 		for(int i = 0; i < LIGHTS; i++)
+// 		{
+// 			//sprintf(buf, "%d ", (100 * (light_vals[i] - lights_min[i])) / (lights_max[i] - lights_min[i]));
+// 			sprintf(buf, "%d ",  light_vals);
+// 			
+// 			usb_write(buf);
+// 		}
+// 		usb_write("\n");
 // 		read_proxes(prox_vals);
 // 		for(int i = 0; i < PROXES; i++)
 // 		{
@@ -126,8 +120,29 @@ int main(void)
 // 		}
 // 		usb_write("\n");
 		
-		uint16_t error_motor_speed = Kp*get_error(light_vals, miinimum ja maksimus);
-		
-		motor_drive(base_motor_speed - error_motor_speed, base_motor_speed + error_motor_speed);
-    }
+// 		int16_t error_motor_speed = Kp*get_error(light_vals, lights_min, lights_max);
+// 		
+		PORTC ^= (1 << STATUS_LED1);
+		int16_t speed_left = speed < 0 ? base_motor_speed : base_motor_speed - speed;
+		int16_t speed_right = speed > 0 ? base_motor_speed : base_motor_speed + speed; 
+ 		motor_drive(speed_left, speed_right);
+		//motor_drive(0, 0);
+// 		
+// 		sprintf(buf, " -- %d", error_motor_speed);
+// 		usb_write(buf);
+// 
+// 		usb_write("\n");
+
+// 		for(int i = 0; i < 800; i++)
+// 		{
+// 			motor_drive(i, i);
+// 			_delay_ms(10);
+// 		}
+// 		for(int i = 800; i > 0; i--)
+// 		{
+// 			motor_drive(i, i);
+// 			_delay_ms(10);
+// 		}
+// 	    
+ 	}
 }
