@@ -47,8 +47,7 @@ ISR(INT0_vect)  // freezes when stop button is pressed
 	esc_stop();
 	motor_drive(0, 0);
 	esc_stop();
-	motor_drive(0, 0);
-	esc_stop();
+	
 	while(1)
 	{
 		set_led(STATUS_LED2, TRUE);
@@ -57,5 +56,8 @@ ISR(INT0_vect)  // freezes when stop button is pressed
 		set_led(STATUS_LED2, FALSE);
 		set_led(STATUS_LED1, FALSE);
 		_delay_ms(100);
+		
+		motor_drive(0, 0);
+		esc_stop();
 	} 	
 }

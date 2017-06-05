@@ -16,7 +16,10 @@
 #include  "calib.h"
 #include "pid.h"
 
-uint16_t base_motor_speed = 150;
+uint16_t base_motor_speed = 220;
+uint8_t esc_speed = 20;
+
+bool_t esc_enabled = TRUE;
 
 void usb_write();
 
@@ -68,7 +71,10 @@ int main(void)
 	usb_init();
 	adc_init();
  	UART_init();
-//	esc_init();
+	if (esc_enabled)
+	{
+		esc_init();
+	}
  	buttons_init();
 	leds_init();
 	calib_init(lights_max, lights_min);
@@ -90,11 +96,15 @@ int main(void)
 	}
 	//_delay_ms(1000);
 	
-	//esc_start();
-	//esc_set_speed(20);
+	if(esc_enabled)
+	{
+		esc_start();
+		esc_set_speed(esc_speed);
+	}
 	//calib_load();
 	
-	//_delay_ms(1000);
+	_delay_ms(1000);
+	
 	while (1) 
     {
  		//char buf[16];
@@ -123,17 +133,19 @@ int main(void)
 // 		int16_t error_motor_speed = Kp*get_error(light_vals, lights_min, lights_max);
 // 		
 
-		PORTC ^= (1 << STATUS_LED1);
-		motor_drive(200, 200);
-		
-		_delay_ms(100);
-		PORTC ^= (1 << STATUS_LED1);
-		motor_drive(400, 400);
-		
- 		_delay_ms(100);
-// 		int16_t speed_left = speed < 0 ? base_motor_speed : base_motor_speed + speed;
-// 		int16_t speed_right = speed > 0 ? base_motor_speed : base_motor_speed - speed; 
-//  		motor_drive(speed_left, speed_right);
+// 		PORTC ^= (1 << STATUS_LED1);
+// 		motor_drive(200, 200);
+// 		
+// 		_delay_ms(100);
+// 		PORTC ^= (1 << STATUS_LED1);
+// 		motor_drive(400, 400);
+// 		
+//  		_delay_ms(100);
+// 		int16_t speed_left = speed < -100 ? -(int16_t)((double)(-speed) / 1.5) - 100 : base_motor_speed + speed;
+// 		int16_t speed_right = speed > 100 ? -100 - (int16_t)((double)speed / 1.5)  : base_motor_speed - speed; 
+		int16_t speed_left = base_motor_speed + speed;
+		int16_t speed_right = base_motor_speed - speed;
+ 		motor_drive(speed_left, speed_right);
 		//motor_drive(0, 0);
 // 		
 // 		sprintf(buf, " -- %d", error_motor_speed);

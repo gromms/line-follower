@@ -4,15 +4,17 @@
 #include "pinout.h"
 #include "adc.h"
 
-double Kp = 1;
-//double Ki = 0;
-double Kd = 0.5;
+double Kp = 0.18;
+double Ki = 0.0025;
+double Kd = 0.00000000;
 
 double pError = 0;
 double error = 0;
+double error_sum = 0;
 
 //int16_t light_weight[] = {-64,-32,-16,-8,-4,-2,-1,1,2,4,8,16,32,64};
-int16_t light_weight[] = {-7,-6,-5,-4,-3,-2,-1, 1,2,3,4,5,6,7};
+//int16_t light_weight[] = {-11,-10,-8,-6,-5,-3,-2, 2, 3, 5, 6, 8, 10, 11};
+int16_t light_weight[] = {-8,-6,-5,-5,-4,-4,-1, 1, 4, 4, 5, 5, 6, 8};
 
 double prev_light_percent[LIGHTS];
 double light_percent[LIGHTS];
@@ -95,6 +97,11 @@ int16_t calc_speed(uint16_t *lights_max, uint16_t *lights_min)
 	pError = error;
 	int16_t error = calc_error(lights_max, lights_min);
 	PORTB &= ~(1 << STATUS_LED2);
+	error_sum += error / (double)560;
 	
-	return (int16_t) (error * Kp + (error - pError) * Kd); 
+// 	char buf[16];
+// 	sprintf(buf, "%ld \n", (int32_t) (error_sum * 1000));
+// 	usb_write(buf);
+	
+	return (int16_t) (error * Kp + error_sum * Ki + (error - pError) * 530 * Kd); 
 }
