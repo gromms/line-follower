@@ -66,6 +66,23 @@ void read_proxes(uint16_t *prox_vals)
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		for(uint8_t i = 0; i < PROXES; i++)
-			prox_vals[i] = adc_read(prox_arr[i]);
+			prox_vals[i] = (adc_read(prox_arr[i])+adc_read(prox_arr[i]))>>1;
 	}
+}
+
+int8_t detect_obtsacle(uint16_t* prox_vals)
+{
+	 read_proxes(prox_vals);
+	if (prox_vals[1] > 170)
+	{
+		if (prox_vals[0] + 40 > prox_vals[1])
+		{
+			return -1; // hill
+		}
+		else
+		{
+			return 1; // wall
+		}
+	}
+	return 0; //no obtsacle
 }

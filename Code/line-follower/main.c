@@ -53,6 +53,7 @@ void usb_debug()
 	usb_write(buf);*/
 }
 
+char buf[16];
 
 int main(void)
 {
@@ -89,7 +90,15 @@ int main(void)
 	//esc_stop();
 	//motor_drive(0, 0);
 	
-	while(check_start_state());
+	while(check_start_state())
+	{
+		set_led(STATUS_LED1, FALSE); 
+		set_led(STATUS_LED2, FALSE); 
+		if (detect_obtsacle(prox_vals) == 1)
+			set_led(STATUS_LED2, TRUE); // wall
+		else if (detect_obtsacle(prox_vals) == -1)
+			set_led(STATUS_LED1, TRUE); // hill
+	}
 	while(calib_state())
 	{
 		calib_start(lights_max, lights_min);
@@ -107,7 +116,6 @@ int main(void)
 	
 	while (1) 
     {
- 		//char buf[16];
  		
   		//read_lights(light_vals);
 		

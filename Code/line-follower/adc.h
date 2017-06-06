@@ -9,6 +9,7 @@ void choose_mux(uint8_t);
 uint16_t adc_read(uint8_t);
 void read_lights(uint16_t*);
 void read_proxes(uint16_t*);
+int8_t detect_obtsacle(uint16_t*);
 
 
 #endif
