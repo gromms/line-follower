@@ -1,2 +1,2 @@
--[Gromet Spaal](https://github.com/gromms)
+-[Gromet Spaal](https://github.com/gromm)
 -[Juhan Raedov](https://github.com/raedovj)
