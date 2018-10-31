@@ -18,7 +18,7 @@ The design will be based on [Jarek Korus'es Thunderstorm] (https://www.youtube.c
 * Max Dimensions:  25x25x25 cm
 * Max Weight: 1 kg
 * Must have a start/stop button or remote
-* Voltage up to 24V
+* Voltage up to 24 V
 
 ## Features
 
